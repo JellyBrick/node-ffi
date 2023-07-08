@@ -10,13 +10,15 @@ Syntax is inspired by Deno FFI. The goal was to be able to easily switch from `f
 
 📦 Scoped `@xan105` packages are for my own personal use but feel free to use them.
 
+- Forked form `@xan105/ffi` (MIT)
+
 Example
 =======
 
 Loading a library with Deno like syntax
 
-```js
-import { dlopen } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { dlopen } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 
 const lib = dlopen("libm", {
   ceil: { 
@@ -29,8 +31,8 @@ lib.ceil(1.5); // 2
 
 Async
 
-```js
-import { dlopen } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { dlopen } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 
 const lib = dlopen("libm", {
   ceil: { 
@@ -44,8 +46,8 @@ await lib.ceil(1.5); // 2
 
 Calling directly from a library
 
-```js
-import { load, types } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { load, types } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 
 const call = load("user32.dll", { abi: "stdcall" });
 const MessageBoxA = call("MessageBoxA", "int", [
@@ -61,8 +63,8 @@ MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
 
 Callback with Deno like syntax
 
-```js
-import { dlopen, Callback} from "@xan105/ffi/koffi";
+```typescript
+import { dlopen, Callback} from "@jellybrick/ffi-cjs/koffi";
 
 const library = dlopen(
   "./callback.so",
@@ -94,7 +96,7 @@ Install
 =======
 
 ```
-npm install @xan105/ffi
+npm install @jellybrick/ffi-cjs
 ```
 
 Please note that `ffi-napi` and `koffi` are optional peer dependencies.<br />
@@ -103,14 +105,24 @@ Install the one you wish to use yourself (or both 🙃).
 API
 ===
 
-⚠️ This module is only available as an ECMAScript module (ESM).
+⚠️ This module is only available as an CommonJS module (CJS).
 
 💡 This lib doesn't have a default entry point. Choose the export corresponding to your liking.
 
-```js
-import ... from "@xan105/ffi/napi";
+### TypeScript
+
+```typescript
+import ... from "@jellybrick/ffi-cjs/napi";
 //OR
-import ... from "@xan105/ffi/koffi";
+import ... from "@jellybrick/ffi-cjs/koffi";
+```
+
+### JavaScript
+
+```js
+const ... = require("@jellybrick/ffi-cjs/napi");
+//OR
+const ... = require("@jellybrick/ffi-cjs/koffi");
 ```
 
 ### Named export
@@ -149,8 +161,8 @@ See the corresponding FFI library for more information on what to pass for `resu
 
 **Example**:
 
-```js
-import { load } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { load } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 const call = load("libm");
 
 const ceil = call("ceil", "double", ["double"])
@@ -201,8 +213,8 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
   
 **Example**
 
-```js
-import { dlopen, types } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { dlopen, types } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 const { BOOL } = types.win32;
 
 const lib = dlopen("xinput1_4", {
@@ -222,15 +234,15 @@ Such as Deno types (rust) and Windows specific types (DWORD,...).
 
 💡 Windows specific types are grouped together under `win32`.
 
-```js
-import { types } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { types } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 const { DWORD, LPCSTR } = types.win32;
 ```
 
 💡 When using `koffi` alias are also set with `koffi.alias()` so you can use them as string.
 
-```js
-import { load } from "@xan105/ffi/koffi";
+```typescript
+import { load } from "@jellybrick/ffi-cjs/koffi";
 const call = load("user32.dll", { abi: "stdcall" });
 const MessageBoxA = call("MessageBoxA", "int", ["void *", "LPCSTR", "LPCSTR", "uint"]);
 ```
@@ -241,19 +253,19 @@ You can still use destructuring if needed as long as the name is "allowed".
 ❌ No
 
 ```
-import { i32 } from "@xan105/ffi/koffi/types"
+import { i32 } from "@jellybrick/ffi-cjs/koffi/types"
 ```
 
 ✔️ Yes
 ```
-import { types } from "@xan105/ffi/koffi"
+import { types } from "@jellybrick/ffi-cjs/koffi"
 const { i32 } = types;
 ```
 
 🚫 Forbidden
 
 ```
-import { types } from "@xan105/ffi/napi"
+import { types } from "@jellybrick/ffi-cjs/napi"
 const { function } = types;
 ```
 
@@ -293,8 +305,8 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 
 ##### Example
   
-```js
-import { dlopen, types, Callback } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { dlopen, types, Callback } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 
 const library = dlopen("./callback.so", {
     setCallback: {
@@ -321,8 +333,8 @@ callback.close();
 
 You can also register the callback at a later time:
 
-```js
-import { dlopen, Callback } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { dlopen, Callback } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 
 const callback = new Callback(
   { parameters: [], result: "void" }
@@ -356,8 +368,8 @@ Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.point
 
 Allocate a buffer and get the corresponding data when passing a pointer to allow the called function to manipulate memory.
 
-```js
-import { dlopen, alloc } from "@xan105/ffi/[ napi | koffi ]";
+```typescript
+import { dlopen, alloc } from "@jellybrick/ffi-cjs/[ napi | koffi ]";
 const dylib = dlopen(...); //lib loading
 
 const number = alloc("int"); //allocate Buffer for the output data

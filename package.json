@@ -1,13 +1,9 @@
 {
-  "name": "@xan105/ffi",
+  "name": "@jellybrick/ffi-cjs",
   "version": "0.7.0",
   "description": "Foreign Function Interface Helper.",
   "type": "module",
   "exports": {
-    "./napi": {
-      "types": "./types/ffi-napi/index.d.ts",
-      "default": "./lib/ffi-napi/index.js"
-    },
     "./koffi": {
       "types": "./types/koffi/index.d.ts",
       "default": "./lib/koffi/index.js"
@@ -23,7 +19,6 @@
   },
   "keywords": [
     "ffi",
-    "ffi-napi",
     "koffi",
     "dlopen",
     "deno"
@@ -57,25 +52,16 @@
     }
   ],
   "devDependencies": {
-    "@types/ffi-napi": "^4.0.7",
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.34.0",
     "typescript": "^4.9.5"
   },
-  "dependencies": {
-    "@xan105/error": "^1.6.0",
-    "@xan105/is": "^2.8.1"
-  },
   "peerDependencies": {
-    "ffi-napi": "^4.0.3",
     "koffi": "^2.3.13"
   },
   "peerDependenciesMeta": {
-    "ffi-napi": {
-      "optional": true
-    },
     "koffi": {
       "optional": true
     }
